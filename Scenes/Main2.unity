@@ -756,6 +756,12 @@ Prefab:
       propertyPath: m_TagString
       value: Pieces
       objectReference: {fileID: 0}
+    - target: {fileID: 114196098736273596, guid: 22914927762813a4c801414c1723e565,
+        type: 2}
+      propertyPath: collisionEffect
+      value: 
+      objectReference: {fileID: 11400000, guid: ed4deb0a2c12deb43ba62c95a0239390,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 22914927762813a4c801414c1723e565, type: 2}
   m_IsPrefabParent: 0
@@ -1972,7 +1978,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 822086455}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a24ddd633f75175469e7c95b1a9eed72, type: 3}
+  m_Script: {fileID: 11500000, guid: 15fda4d37100a5245b11cf956170641a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   state1: {fileID: 11400000, guid: 8bda4811a4718524bba9eb0e11708709, type: 2}

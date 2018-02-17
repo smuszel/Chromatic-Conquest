@@ -8,9 +8,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6f3544dd834f4b42bc0cf93621eaed6, type: 3}
-  m_Name: paint
+  m_Script: {fileID: 11500000, guid: 388319374e5988245bf1598169a22f9b, type: 3}
+  m_Name: destruction_sound
   m_EditorClassIdentifier: 
-  texture: {fileID: 0}
-  wasExecutionSuccesful: 1
-  paintColor: {r: 0.44171715, g: 0.5771343, b: 0.63235295, a: 0}
+  clip: {fileID: 8300000, guid: aa3b2db4e7aa08c41a5c631873a3c5f4, type: 3}
+  volume: 100
+  pitch: 291

@@ -10,9 +10,14 @@ public class Raycaster : MonoBehaviour
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Physics.Raycast(ray, out info);
 
-		if (info.collider?.gameObject.GetHashCode() != Model.Highlighted?.GetHashCode())
+		if (info.collider?.gameObject.GetHashCode() != Model.CurrentlyHighlighted?.GetHashCode())
 		{
-            Model.Highlighted = info.collider?.gameObject;
+            Model.CurrentlyHighlighted = info.collider?.gameObject;
         }
+    }
+
+    void Awake()
+    {
+        GameStateControler.Activate();
     }
 }

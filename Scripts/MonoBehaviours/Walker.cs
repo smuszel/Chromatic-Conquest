@@ -3,47 +3,58 @@ using UnityEngine;
 
 public class Walker : MonoBehaviour 
 {
+    public CollisionEffect collisionEffect;
+    public PieceArrivedEffect arrivedEffect;
     public float speed = 30f;
 
-    Vector3 destination;
+    GameObject destination;
 
     Rigidbody body;
-
-    Renderer rend;
-
 
     void Start() 
 	{
         body = gameObject.GetComponent<Rigidbody>();
-        rend = gameObject.GetComponent<Renderer>();
-
-        destination = Tools.GenerateDestination();
+        NewDestination();
     }
 	
 	void Update() 
 	{
         
-        if (Tools.AreSimilar(transform.position, destination))
+        if (Tools.AreSimilar(transform.position, destination.transform.position))
         {
             body.velocity = Vector3.zero;
-            // rend.material.color = Color.blue;
-            destination = Tools.GenerateDestination();
+            arrivedEffect.Execute(gameObject, destination);
+            NewDestination();
         }
+
         UpdateMovement();
 	}
 
     public void UpdateMovement()
     {
-        body.velocity = (destination - transform.position).normalized * speed * Time.deltaTime;
+        body.velocity = (destination.transform.position - transform.position).normalized * speed * Time.deltaTime;
     }
 
     void OnCollisionEnter(Collision other)
     {
-        destination = Tools.GenerateDestination();
+        collisionEffect.Execute(gameObject, other.collider.gameObject);
+        NewDestination();
     }
 
     void OnCollisionStay(Collision other)
     {
-        destination = Tools.GenerateDestination();
+        NewDestination();
+    }
+
+    void NewDestination()
+    {
+        destination = Model.GetUnoccupiedTile();
+    }
+
+    void OnDestroy()
+    {
+        // Debug.Log(gameObject);
+        // Model.PiecesAlive.Remove(gameObject);
+        GameStateControler.RemovePiece(gameObject);
     }
 }

@@ -2,13 +2,12 @@ using UnityEngine;
 
 public class Marker : MonoBehaviour
 {
-    public GameObject alwaysTarget;
+    public GameObject MyTarget { get; set; }
 
     Renderer rend;
 
     void Start()
     {
-        alwaysTarget = GameObject.FindGameObjectWithTag("Pieces");
         rend = gameObject.GetComponent<Renderer>();
         rend.enabled = false;
     }
@@ -25,19 +24,22 @@ public class Marker : MonoBehaviour
 
     void Update()
     {
-        transform.position = alwaysTarget.transform.position;
+        if (MyTarget != null)
+        {
+            transform.position = MyTarget.transform.position;
+        }
     }
 
     void Relocate(GameObject target)
     {
-
         if (target == null)
         {
             rend.enabled = false;
+            transform.position = Vector3.zero;
         }
         else
         {
-            alwaysTarget = target;
+            MyTarget = target;
             rend.enabled = true;
             gameObject.transform.position = target.transform.position;
         }

@@ -4,7 +4,7 @@ public static class AudioManager
 {
     public static int totalSources = 15;
 
-    private static readonly string soundBoxName = "SoundBox";
+    public static readonly string soundBoxName = "SoundBox";
 
     public static AudioSource backgroundSource;
 

@@ -7,10 +7,8 @@ public abstract class CursorState : ScriptableObject
     public event Action<GameObject> PlaceholderEventName;
 
     public bool wasExecutionSuccesful = true;
-    public virtual bool Execute(GameObject go)
+    public virtual void Execute(GameObject go)
     {
         PlaceholderEventName?.Invoke(go);
-        return wasExecutionSuccesful;
-    }    
-
+    }
 }

@@ -8,8 +8,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9652819763d94014881feb7308d6aa08, type: 3}
-  m_Name: info
+  m_Script: {fileID: 11500000, guid: c0e2971f828f9c245916ae5f86c73831, type: 3}
+  m_Name: collision_base
   m_EditorClassIdentifier: 
-  wasExecutionSuccesful: 1
-  paintColor: {r: 0, g: 0, b: 0, a: 0}
+  destructionSound: {fileID: 11400000, guid: ff670b24eee7df542938d372a5833260, type: 2}
