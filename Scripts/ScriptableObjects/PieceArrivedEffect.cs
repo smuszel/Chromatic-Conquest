@@ -14,9 +14,9 @@ public class PieceArrivedEffect : ScriptableObject
         }
         else
         {
+            Debug.Log("Marking as black");
             piece.GetComponent<Renderer>().material.color = tileColor;
             tile.GetComponent<Renderer>().material.color = Color.black;
-            GameStateControler.MarkTileUnoccupied(tile);
         }
     }
 }

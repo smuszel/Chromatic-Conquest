@@ -1,7 +1,25 @@
 ﻿using UnityEngine;
+using System;
 
 public class Raycaster : MonoBehaviour 
 {
+    public static event Action<GameObject> HighlightChanged;
+
+    static GameObject _current;
+    public static GameObject CurrentlyHighlighted
+    {
+        get
+        {
+            return _current;
+        }
+        set
+        {
+            if (_current?.GetHashCode() != value?.GetHashCode())
+            {
+                HighlightChanged?.Invoke(value);
+            }
+        }
+    }
     Ray ray;
     RaycastHit info;
 
@@ -10,14 +28,6 @@ public class Raycaster : MonoBehaviour
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Physics.Raycast(ray, out info);
 
-		if (info.collider?.gameObject.GetHashCode() != Model.CurrentlyHighlighted?.GetHashCode())
-		{
-            Model.CurrentlyHighlighted = info.collider?.gameObject;
-        }
-    }
-
-    void Awake()
-    {
-        GameStateControler.Activate();
+        CurrentlyHighlighted = info.collider?.gameObject;
     }
 }

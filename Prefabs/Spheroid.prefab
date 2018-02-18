@@ -113,7 +113,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisionEffect: {fileID: 11400000, guid: ed4deb0a2c12deb43ba62c95a0239390, type: 2}
   arrivedEffect: {fileID: 11400000, guid: 1c2fa3a3b0b36a74f91952e05242a7fb, type: 2}
-  speed: 36.07
+  speed: 100
+  type: 0
+  destination: {fileID: 0}
+  rend: {fileID: 0}
 --- !u!135 &135574514574887372
 SphereCollider:
   m_ObjectHideFlags: 1

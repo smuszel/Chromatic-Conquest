@@ -1,57 +1,97 @@
 using UnityEngine;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
+[CreateAssetMenu]
 public static class Model
 {
-    public static event Action<GameObject> HighlightWasChanged;
-    private static GameObject _highlighted;
+    public static List<Color> _colorPool;
 
-    public static GameObject CurrentlyHighlighted
+    public static Color RandomColor
     {
         get
         {
-            return _highlighted;
-        }
-        set
-        {
-            _highlighted = value;
-            HighlightWasChanged?.Invoke(value);
+            return RandomElement<Color>(_colorPool);
         }
     }
 
-    private static CursorState _state;
-    public static CursorState CurrentCursorState
+    public static List<GameObject> _piecesAlive;
+    public static int PieceCount
     {
         get
         {
-            return _state;
+            return _piecesAlive.Count;
         }
-
-        set
+    }
+    public static GameObject PieceAlive
+    {
+        get
         {
-            Cursor.SetCursor(value?.texture, Vector2.zero, CursorMode.Auto);
-            _state = value;
+            return RandomElement(_piecesAlive);
+        }
+    }
+    public static List<GameObject> _tiles;
+    public static GameObject TileAvaible
+    {
+        get
+        {
+            var notBlack = _tiles.Where(t => IsUnoccupied(t));
+            var honed = _piecesAlive.Select(p => p.GetComponent<Walker>().Destination);
+            var avaible = notBlack.Except(honed);
+
+            Debug.Log($"Not black {notBlack.Count()} honed {honed.Count()} avaible {avaible}");
+
+            if (avaible.Count() < 2)
+            {
+                return null;
+            }
+
+            return RandomElement(notBlack.Except(honed).ToList());
+            // Debug.Log($"There are {_tilesAvaible.Count} in avaible, {_tilesClean.Count} in clean and {_tilesOccupied.Count} in occupied");
         }
     }
 
-    public static List<GameObject> PiecesAlive { get; set; }
-
-    public static List<GameObject> TilesAvaible { get; set; }
-    public static List<GameObject> TilesOccupied { get; set; }
-
-    public static GameObject GetUnoccupiedTile()
+    public static int UnoccupiedCount
     {
-        return TilesAvaible[RandomIndex(TilesAvaible)];
+        get
+        {
+            return _tiles.Where(t => IsUnoccupied(t)).ToList().Count;
+        }
     }
 
-    private static int RandomIndex(List<GameObject> lst)
+    public static bool IsUnoccupied(GameObject tile)
     {
-        return Mathf.FloorToInt(UnityEngine.Random.value * lst.Count);
+        return tile.GetComponent<Renderer>().material.color != Color.black;
+    }
+
+    private static T RandomElement<T>(List<T> lst)
+    {
+        return lst[Mathf.FloorToInt(UnityEngine.Random.value * lst.Count)];
+    }
+
+    static Model()
+    {
+        ModelHelper.Instance.Construct();
     }
 
     // public static void ShuffleList()
     // {
     //     Debug.Log("Shuffle NI");
+    // }
+
+    // private static CursorState _state;
+    // public static CursorState CurrentCursorState
+    // {
+    //     get
+    //     {
+    //         return _state;
+    //     }
+
+    //     set
+    //     {
+    //         Cursor.SetCursor(value?.texture, Vector2.zero, CursorMode.Auto);
+    //         _state = value;
+    //     }
     // }
 }

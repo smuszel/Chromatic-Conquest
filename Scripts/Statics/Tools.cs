@@ -3,19 +3,17 @@ using UnityEngine;
 
 public static class Tools 
 {
-    public static float edge = 8f;
     public static float tolerance = 0.05f;
-    public static Vector3 GenerateDestination()
-	{
-        float x = Mathf.Floor(UnityEngine.Random.value * edge);
-        float z = Mathf.Floor(UnityEngine.Random.value * edge);
-        return new Vector3(x, 0, z);
+
+    public static bool AreSimilar(GameObject first, GameObject second)
+    {
+        return AreSimilar(first.GetComponent<Renderer>().material.color, second.GetComponent<Renderer>().material.color);
     }
 
     public static bool AreSimilar(Vector3 first, Vector3 second)
     {
-        float dx = first.x - second.x;
-        float dz = first.z - second.z;
+        float dx = Mathf.Abs(first.x - second.x);
+        float dz = Mathf.Abs(first.z - second.z);
 
         return dx < tolerance && dz < tolerance;
     }
@@ -29,7 +27,13 @@ public static class Tools
         return first.r == second.r && first.g == second.g && first.b == second.b;
     }
 
-    public static void Swap<T> (ref T first, ref T second)
+    public static void Swap<T>(ref T first, ref T second)
+    {
+        T temp = first;
+        first = second;
+        second = temp;
+    }
+    public static void Swap<T>(T first, T second)
     {
         T temp = first;
         first = second;

@@ -1,7 +1,8 @@
 using UnityEngine;
 
-public class Marker : MonoBehaviour
+public class MarkerHighlight : MonoBehaviour
 {
+    // public Effect clickEffect;
     public GameObject MyTarget { get; set; }
 
     Renderer rend;
@@ -14,17 +15,22 @@ public class Marker : MonoBehaviour
 
     void OnEnable()
     {
-        Model.HighlightWasChanged += Relocate;
+        Raycaster.HighlightChanged += Relocate;
     }
 
     void OnDisable()
     {
-        Model.HighlightWasChanged -= Relocate;
+        Raycaster.HighlightChanged -= Relocate;
     }
 
     void Update()
     {
-        if (MyTarget != null)
+        if (MyTarget != null && Input.GetButtonDown("Fire1"))
+        {
+            // clickEffect.Execute(MyTarget);
+            // MyTarget = null;
+        }
+        else if (MyTarget != null)
         {
             transform.position = MyTarget.transform.position;
         }
@@ -37,7 +43,7 @@ public class Marker : MonoBehaviour
             rend.enabled = false;
             transform.position = Vector3.zero;
         }
-        else
+        else if (target.tag == "Pieces")
         {
             MyTarget = target;
             rend.enabled = true;
