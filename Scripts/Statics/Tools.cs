@@ -10,10 +10,12 @@ public static class Tools
         return AreSimilar(first.GetComponent<Renderer>().material.color, second.GetComponent<Renderer>().material.color);
     }
 
-    public static bool AreSimilar(Vector3 first, Vector3 second)
+    public static bool AreSimilar(Vector3? first, Vector3? second)
     {
-        float dx = Mathf.Abs(first.x - second.x);
-        float dz = Mathf.Abs(first.z - second.z);
+        if (first == null || second == null) return false;
+
+        float dx = Mathf.Abs((float)(first?.x - second?.x));
+        float dz = Mathf.Abs((float)(first?.z - second?.z));
 
         return dx < tolerance && dz < tolerance;
     }
@@ -26,17 +28,9 @@ public static class Tools
     {
         return first.r == second.r && first.g == second.g && first.b == second.b;
     }
-
-    public static void Swap<T>(ref T first, ref T second)
+    public static bool AreSimilar(Color? first, Color? second)
     {
-        T temp = first;
-        first = second;
-        second = temp;
-    }
-    public static void Swap<T>(T first, T second)
-    {
-        T temp = first;
-        first = second;
-        second = temp;
+        if (first == null || second == null) return false;
+        return first?.r == second?.r && first?.g == second?.g && first?.b == second?.b;
     }
 }

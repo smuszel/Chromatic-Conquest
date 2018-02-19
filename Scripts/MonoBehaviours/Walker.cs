@@ -3,117 +3,93 @@ using UnityEngine;
 
 public class Walker : MonoBehaviour 
 {
+    public GameObject partSys;
+    public SoundEffect getNoDestinationSound;
+    public SoundEffect destructionSound;
+    public GameStateControler controler;
     public CollisionEffect collisionEffect;
     public PieceArrivedEffect arrivedEffect;
-    public float maxSpeed = 80f;
+    public WalkerBrain walkerBrain;
 
-    [HideInInspector]
-    public float speed = 0f;
-
-    private bool freeze;
-
-    private GameObject _destination;
-    public GameObject Destination
-    {
-        get
-        {
-            return _destination;
-        }
-        set
-        {
-            if (value == null)
-            {
-                Destroy(gameObject);
-            }
-            _destination = value;
-        }
-    }
-    public Renderer rend;
+    public GameObject Destination { get; set; }
 
     Rigidbody body;
 
-    void OnEnable()
-    {
-        Raycaster.HighlightChanged += ChangeHighlight;
-    }
+    [HideInInspector]
+    public Renderer rend;
 
-    void OnDisable()
+
+    void Awake()
     {
-        Raycaster.HighlightChanged -= ChangeHighlight;
+        Model.Poke();
     }
 
     void Start() 
 	{
-        body = gameObject.GetComponent<Rigidbody>();
         rend = gameObject.GetComponent<Renderer>();
+        body = gameObject.GetComponent<Rigidbody>();
         NewDestination();
     }
 	
 	void FixedUpdate() 
 	{
-        // if (Input.GetKeyDown(KeyCode.Space))
-        if (Tools.AreSimilar(transform.position, Destination.transform.position))
+        HighlightDecision(Raycaster.CurrentlyHighlighted);
+
+        if (Tools.AreSimilar(transform?.position, Destination?.transform.position))
         {
-            body.velocity = Vector3.zero;
             arrivedEffect.Execute(gameObject, Destination);
             NewDestination();
         }
 
-        UpdateMovement();
-	}
-
-    public void UpdateMovement()
-    {
-        if (!freeze)
-        {
-            body.velocity = (Destination.transform.position - transform.position).normalized * speed * Time.deltaTime;
-        }
-        else
-        {
-            body.velocity = Vector3.zero;
-        }
+        walkerBrain.UpdateMovement(gameObject, Destination);
+        controler.CheckLooseCondition();
     }
 
-    // void OnCollisionEnter(Collision other)
-    // {
-    //     collisionEffect.Execute(this, other.collider.gameObject.GetComponent<Walker>());
-    // }
-
-    // void OnCollisionStay(Collision other)
-    // {
-    //     NewDestination();
-    // }
+    void OnCollisionEnter(Collision other)
+    {
+        collisionEffect.Execute(this, other.collider.gameObject.GetComponent<Walker>());
+    }
 
     void NewDestination()
     {
-        Destination = Model.TileAvaible;
-    }
+        Destination = walkerBrain.GetDestination();
 
-    public void ChangeSpeed()
-    {
-        if (speed > 0)
+        if (Destination == null)
         {
-            speed -= 20;
+            rend.material.color = Color.black;
+            getNoDestinationSound.Execute();
         }
     }
 
-    public void ChangeHighlight(GameObject go)
+    public void HighlightDecision(GameObject go)
     {
-        if (go == gameObject)
+        if (go == gameObject && transform.position.y < 0.5)
         {
-            freeze = true;
+            body.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezePositionX;
         }
         else
         {
-            freeze = false;
+            body.constraints = RigidbodyConstraints.None;
         }
+    }
+
+    public void PreDestroy()
+    {
+        var particles = Instantiate(partSys, transform.position, Quaternion.identity);
+
+        var settings1 = particles.GetComponent<ParticleSystem>().main;
+        var settings2 = particles.GetComponentInChildren<ParticleSystem>().main;
+
+        settings1.startColor = rend.material.color;
+        settings2.startColor = rend.material.color;
+
+        //FRACTURE
+
+        destructionSound.Execute();
     }
 
     void OnDestroy()
     {
-        // Debug.Log(gameObject);
-        // Model.PiecesAlive.Remove(gameObject);
-        GameStateControler.RemovePiece(gameObject);
-        // _destination.GetComponent<Tile>().Predator = null;
+        controler.RemovePiece(gameObject);
     }
 }

@@ -3,7 +3,6 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-[CreateAssetMenu]
 public static class Model
 {
     public static List<Color> _colorPool;
@@ -16,12 +15,42 @@ public static class Model
         }
     }
 
+    public static Color? MajorColor
+    {
+        get
+        {
+            var pieceColors = _piecesAlive.Select(x => x.GetComponent<Renderer>().material.color);
+            var dic = _colorPool.ToDictionary(color => color, color => HowManyMatches(pieceColors, color));
+
+            var vals = dic.Values.ToList();
+            var max = dic.Values.Max();
+            vals.Remove(max);
+
+            if (vals.Contains(max))
+            {
+                return null;
+            }
+            else
+            {
+                return dic.Where(z => z.Value == max).Select(q => q.Key).ToArray()[0];
+            }          
+            // var MajorList = dic.Where(x => x.Value == max).Select(y => y.Key).ToList();
+        }
+    }
+
     public static List<GameObject> _piecesAlive;
     public static int PieceCount
     {
         get
         {
             return _piecesAlive.Count;
+        }
+    }
+    public static Vector3[] PiecePositions
+    {
+        get
+        {
+            return _piecesAlive.Select(p => p.transform.position).ToArray();
         }
     }
     public static GameObject PieceAlive
@@ -36,11 +65,11 @@ public static class Model
     {
         get
         {
-            var notBlack = _tiles.Where(t => IsUnoccupied(t));
+            var notBlack = _tiles.Where(t => !IsBlack(t));
             var honed = _piecesAlive.Select(p => p.GetComponent<Walker>().Destination);
             var avaible = notBlack.Except(honed);
 
-            Debug.Log($"Not black {notBlack.Count()} honed {honed.Count()} avaible {avaible}");
+            // Debug.Log($"Not black {notBlack.Count()} honed {honed.Count()} avaible {avaible}");
 
             if (avaible.Count() < 2)
             {
@@ -52,17 +81,17 @@ public static class Model
         }
     }
 
-    public static int UnoccupiedCount
+    public static int BlackCount
     {
         get
         {
-            return _tiles.Where(t => IsUnoccupied(t)).ToList().Count;
+            return _piecesAlive.Where(piece => IsBlack(piece)).ToList().Count;
         }
     }
 
-    public static bool IsUnoccupied(GameObject tile)
+    public static bool IsBlack(GameObject go)
     {
-        return tile.GetComponent<Renderer>().material.color != Color.black;
+        return go.GetComponent<Renderer>().material.color == Color.black;
     }
 
     private static T RandomElement<T>(List<T> lst)
@@ -70,28 +99,78 @@ public static class Model
         return lst[Mathf.FloorToInt(UnityEngine.Random.value * lst.Count)];
     }
 
-    static Model()
+    public static int HowManyMatches<T>(IEnumerable<T> lst, T target)
     {
-        ModelHelper.Instance.Construct();
+        int c = 0;
+
+        foreach (T element in lst)
+        {
+            if (element.Equals(target)) c++;
+        }
+
+        return c;
     }
 
-    // public static void ShuffleList()
-    // {
-    //     Debug.Log("Shuffle NI");
-    // }
+    public static GameObject GetClosestWithinTolerance(Vector3 point, float tolerance)
+    {
+        if (_piecesAlive.FirstOrDefault() == null) return null;
 
-    // private static CursorState _state;
-    // public static CursorState CurrentCursorState
-    // {
-    //     get
-    //     {
-    //         return _state;
-    //     }
+        float[] distances = _piecesAlive.Select(p => Vector3.Distance(point, p.transform.position)).ToArray();
+        int idx = Array.IndexOf(distances, distances.Min());
 
-    //     set
-    //     {
-    //         Cursor.SetCursor(value?.texture, Vector2.zero, CursorMode.Auto);
-    //         _state = value;
-    //     }
-    // }
+        // Debug.Log($"Distance {distances.Min()} from {_piecesAlive[idx]}, passing {distances.Min() < tolerance} becus tolerance is {tolerance}");
+
+        if (distances.Min() < tolerance)
+        {
+            return _piecesAlive[idx];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    static Model()
+    {
+        Initialize();
+        RandomizeColors();
+    }
+
+    static public void Initialize()
+    {
+        _piecesAlive = new List<GameObject>();
+        _tiles = new List<GameObject>();
+
+        foreach (GameObject piece in GameObject.FindGameObjectsWithTag("Pieces"))
+        {
+            _piecesAlive.Add(piece);
+        }
+
+        foreach (GameObject tile in GameObject.FindGameObjectsWithTag("Tiles"))
+        {
+            _tiles.Add(tile);
+        }
+
+        _colorPool = new List<Color>();
+        _colorPool.Add(Color.red);
+        _colorPool.Add(Color.blue);
+        _colorPool.Add(Color.green);
+        _colorPool.Add(Color.magenta);
+    }
+
+    static void RandomizeColors()
+    {
+        foreach (GameObject tile in _tiles)
+        {
+            tile.GetComponent<Renderer>().material.color = RandomColor;
+        }
+
+        foreach (GameObject piece in _piecesAlive)
+        {
+            piece.GetComponent<Renderer>().material.color = RandomColor;
+        }
+    }
+
+    public static void Poke()
+    {}
 }

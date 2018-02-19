@@ -58,7 +58,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 289caf8fb8c7a5248997be50ac767c95, type: 2}
+  - {fileID: 2100000, guid: a33040f3904b4584699b2f159c81e0e2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -98,7 +98,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 4
+  m_Constraints: 0
   m_CollisionDetection: 1
 --- !u!114 &114764724156050756
 MonoBehaviour:
@@ -111,11 +111,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ebbafcd7f11c6b46a783745e127d860, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  partSys: {fileID: 1227645761871072, guid: 65c1c1d236f42b9498f58a90acc5c31b, type: 2}
+  getNoDestinationSound: {fileID: 11400000, guid: b6c27e50b8ef129488576c6bf8803fe3,
+    type: 2}
+  destructionSound: {fileID: 11400000, guid: a14ab56047600be4ca51a31ed56ec7a9, type: 2}
+  controler: {fileID: 11400000, guid: d41b71942b2a0cb48bbb610cfb35c7ec, type: 2}
   collisionEffect: {fileID: 11400000, guid: ed4deb0a2c12deb43ba62c95a0239390, type: 2}
   arrivedEffect: {fileID: 11400000, guid: 1c2fa3a3b0b36a74f91952e05242a7fb, type: 2}
-  speed: 100
-  type: 0
-  destination: {fileID: 0}
+  walkerBrain: {fileID: 11400000, guid: ab3769d48528a4847b5b093ed921fafd, type: 2}
   rend: {fileID: 0}
 --- !u!135 &135574514574887372
 SphereCollider:
@@ -123,7 +126,7 @@ SphereCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1539587040140006}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: a14bfdd33cc47f446bd9ff39e45e613a, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2

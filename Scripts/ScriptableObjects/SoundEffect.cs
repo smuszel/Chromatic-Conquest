@@ -9,12 +9,14 @@ public class SoundEffect : ScriptableObject
     public float volume = 100f;
 	[Range(0f, 400f)]
     public float pitch = 100f;
+    public bool stopBackground = false;
     AudioSource src;
 
     public void Execute()
 	{
         src = AudioManager.VacantSourceRequest();
-        
+        if (stopBackground) AudioManager.StopBackgroundRequest();
+
         src.clip = clip;
         src.volume = volume/100;
         src.pitch = pitch/100;

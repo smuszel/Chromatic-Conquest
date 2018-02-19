@@ -13,6 +13,8 @@ public static class AudioManager
     public static GameObject soundBox;
     public static void EnsureAudioPresence() 
 	{
+        backgroundSource = soundBox?.GetComponent<AudioSource>();
+        
         if (soundBox == null)
         {
             Debug.Log(soundBoxName + " not found, loading one");
