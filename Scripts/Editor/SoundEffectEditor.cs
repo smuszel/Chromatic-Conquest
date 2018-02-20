@@ -5,8 +5,8 @@ using System;
 [CustomEditor(typeof(SoundEffect)), CanEditMultipleObjects]
 public class SoundEffectEditor: Editor
 {
-
     [SerializeField] private AudioSource _previewer;
+
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
@@ -21,10 +21,10 @@ public class SoundEffectEditor: Editor
             tgt.Execute(_previewer);
         }
     }
+
     public void OnDisable()
     {
         if (_previewer != null)
         DestroyImmediate(_previewer.gameObject);
     }
-
 }

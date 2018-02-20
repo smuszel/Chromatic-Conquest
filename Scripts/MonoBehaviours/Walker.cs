@@ -6,18 +6,13 @@ public class Walker : MonoBehaviour
     public GameObject partSys;
     public SoundEffect getNoDestinationSound;
     public SoundEffect destructionSound;
-    public GameStateControler controler;
     public CollisionEffect collisionEffect;
-    public PieceArrivedEffect arrivedEffect;
-    public WalkerBrain walkerBrain;
-
+    public WalkerStrategy strategy;
+    public bool freezable = true;
     public GameObject Destination { get; set; }
-
-    Rigidbody body;
 
     [HideInInspector]
     public Renderer rend;
-
 
     void Awake()
     {
@@ -27,32 +22,14 @@ public class Walker : MonoBehaviour
     void Start() 
 	{
         rend = gameObject.GetComponent<Renderer>();
-        body = gameObject.GetComponent<Rigidbody>();
-        NewDestination();
+        Destination = strategy.GetDestination();
+
+        if (Destination == null) Debug.LogWarning("Destination initialized improperly");
     }
 	
 	void FixedUpdate() 
 	{
-        HighlightDecision(Raycaster.CurrentlyHighlighted);
-
-        if (Tools.AreSimilar(transform?.position, Destination?.transform.position))
-        {
-            arrivedEffect.Execute(gameObject, Destination);
-            NewDestination();
-        }
-
-        walkerBrain.UpdateMovement(gameObject, Destination);
-        controler.CheckLooseCondition();
-    }
-
-    void OnCollisionEnter(Collision other)
-    {
-        collisionEffect.Execute(this, other.collider.gameObject.GetComponent<Walker>());
-    }
-
-    void NewDestination()
-    {
-        Destination = walkerBrain.GetDestination();
+        Destination = strategy.UpdateMovement(gameObject, Destination);
 
         if (Destination == null)
         {
@@ -61,16 +38,9 @@ public class Walker : MonoBehaviour
         }
     }
 
-    public void HighlightDecision(GameObject go)
+    void OnCollisionEnter(Collision other)
     {
-        if (go == gameObject && transform.position.y < 0.5)
-        {
-            body.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezePositionX;
-        }
-        else
-        {
-            body.constraints = RigidbodyConstraints.None;
-        }
+        collisionEffect.Execute(this, other.collider.gameObject.GetComponent<Walker>());
     }
 
     public void PreDestroy()
@@ -90,6 +60,6 @@ public class Walker : MonoBehaviour
 
     void OnDestroy()
     {
-        controler.RemovePiece(gameObject);
+        Model._piecesAlive.Remove(gameObject);
     }
 }

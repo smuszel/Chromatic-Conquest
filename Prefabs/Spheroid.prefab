@@ -37,8 +37,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1539587040140006}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.06, y: 0.97, z: 2.03}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4.89, y: 1.94, z: 4.44}
   m_LocalScale: {x: 0.65, y: 0.65, z: 0.65}
   m_Children: []
   m_Father: {fileID: 0}
@@ -115,10 +115,8 @@ MonoBehaviour:
   getNoDestinationSound: {fileID: 11400000, guid: b6c27e50b8ef129488576c6bf8803fe3,
     type: 2}
   destructionSound: {fileID: 11400000, guid: a14ab56047600be4ca51a31ed56ec7a9, type: 2}
-  controler: {fileID: 11400000, guid: d41b71942b2a0cb48bbb610cfb35c7ec, type: 2}
   collisionEffect: {fileID: 11400000, guid: ed4deb0a2c12deb43ba62c95a0239390, type: 2}
-  arrivedEffect: {fileID: 11400000, guid: 1c2fa3a3b0b36a74f91952e05242a7fb, type: 2}
-  walkerBrain: {fileID: 11400000, guid: ab3769d48528a4847b5b093ed921fafd, type: 2}
+  strategy: {fileID: 11400000, guid: d0b8c309e8637404d88c89666ac941dd, type: 2}
   rend: {fileID: 0}
 --- !u!135 &135574514574887372
 SphereCollider:

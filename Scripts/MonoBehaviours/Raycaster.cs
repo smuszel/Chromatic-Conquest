@@ -5,8 +5,8 @@ using System.Linq;
 public class Raycaster : MonoBehaviour 
 {
     public float highlightTolerance = 5f;
-    static GameObject _current;
-    public static GameObject CurrentlyHighlighted { get; set; }
+    public static GameObject HighlightedObject { get; set; }
+    public static Vector3 HighlightedPoint { get; set; }
     Ray ray;
     RaycastHit info;
 
@@ -15,14 +15,15 @@ public class Raycaster : MonoBehaviour
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Physics.Raycast(ray, out info);
 
-        
+        HighlightedPoint = info.point;
+
         if (info.collider?.gameObject.tag != "Pieces")
         {
-            CurrentlyHighlighted = Model.GetClosestWithinTolerance(info.point, highlightTolerance);
+            HighlightedObject = Model.GetClosestWithinTolerance(info.point, highlightTolerance);
         }
         else
         {
-            CurrentlyHighlighted = info.collider?.gameObject;
-        } 
+            HighlightedObject = info.collider?.gameObject;
+        }
     }
 }

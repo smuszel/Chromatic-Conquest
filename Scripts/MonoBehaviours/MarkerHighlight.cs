@@ -5,7 +5,6 @@ public class MarkerHighlight : MonoBehaviour
 {
     public ClickEffect clickEffect;
     public GameObject MyTarget { get; set; }
-
     Renderer rend;
     new Light light;
 
@@ -16,9 +15,10 @@ public class MarkerHighlight : MonoBehaviour
         rend.enabled = false;
         light.enabled = false;
     }
+
     void Update()
     {
-        HighlightDecision(Raycaster.CurrentlyHighlighted);
+        HighlightDecision(Raycaster.HighlightedObject);
         
         if (MyTarget != null && Input.GetButtonDown("Fire1"))
         {

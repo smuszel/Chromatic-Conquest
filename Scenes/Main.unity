@@ -1767,6 +1767,7 @@ GameObject:
   - component: {fileID: 822086457}
   - component: {fileID: 822086456}
   - component: {fileID: 822086460}
+  - component: {fileID: 822086461}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1850,6 +1851,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightTolerance: 0.6
+--- !u!114 &822086461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 822086455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48810addf561b7f4b879ce6b071d7877, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lostParticles: {fileID: 1868254428868854, guid: cc2b91abcb5a83f4cacadab4f3fc7132,
+    type: 2}
+  winSound: {fileID: 11400000, guid: 7dffd1138dc38bf43a836ca61b693a79, type: 2}
+  lostSound: {fileID: 11400000, guid: 57a475419590b1c4e8fc257e0521626b, type: 2}
 --- !u!1001 &822230690
 Prefab:
   m_ObjectHideFlags: 0

@@ -3,14 +3,11 @@
 public static class AudioManager
 {
     public static int totalSources = 15;
-
     public static readonly string soundBoxName = "SoundBox";
-
     public static AudioSource backgroundSource;
-
     public static AudioSource[] sharedSources = new AudioSource[totalSources];
-
     public static GameObject soundBox;
+    
     public static void EnsureAudioPresence() 
 	{
         backgroundSource = soundBox?.GetComponent<AudioSource>();

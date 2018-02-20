@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu]
-public class PieceArrivedEffect : ScriptableObject
+public class PieceArrivedEffect: ScriptableObject
 {
     public SoundEffect arrivalSound;
     public void Execute(GameObject piece, GameObject tile)
@@ -18,6 +18,5 @@ public class PieceArrivedEffect : ScriptableObject
             tile.GetComponent<Renderer>().material.color = Color.black;
             arrivalSound.Execute();
         }
-
     }
 }

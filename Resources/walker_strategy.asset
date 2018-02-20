@@ -8,7 +8,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab6e1f46d6fe025408d004b7ca01ee7b, type: 3}
-  m_Name: walker_brain
-  m_EditorClassIdentifier: 
-  speed: 120
+  m_Script: {fileID: 0}
+  m_Name: walker_strategy
+  m_EditorClassIdentifier: Assembly-CSharp::WalkerStrategy
+  arrivedEffect: {fileID: 11400000, guid: 1c2fa3a3b0b36a74f91952e05242a7fb, type: 2}
+  speed: 100

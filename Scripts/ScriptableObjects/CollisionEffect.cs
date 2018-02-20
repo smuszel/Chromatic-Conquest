@@ -5,7 +5,6 @@ using UnityEngine;
 public class CollisionEffect : ScriptableObject
 {
     public SoundEffect collisionSound;
-
     public static Stack<KeyValuePair<string, string>> collisionHistory;
 
     void OnEnable()
@@ -13,6 +12,7 @@ public class CollisionEffect : ScriptableObject
         collisionHistory = new Stack<KeyValuePair<string, string>>();
         collisionHistory.Push(new KeyValuePair<string, string>("x", "y"));
     }
+
     public void Execute(Walker first, Walker second)
     {
         if (first != null && second != null && !HasJustCollided(first.gameObject, second.gameObject))

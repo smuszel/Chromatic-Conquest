@@ -14,4 +14,4 @@ MonoBehaviour:
   clip: {fileID: 8300000, guid: 8d2703b75c7c4ba49a057ff4e1cac214, type: 3}
   volume: 100
   pitch: 82
-  stopBackground: 1
+  stopBackground: 0
