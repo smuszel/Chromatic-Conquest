@@ -12,4 +12,3 @@ MonoBehaviour:
   m_Name: click_base
   m_EditorClassIdentifier: 
   destroySound: {fileID: 11400000, guid: ea65898ee818b384ea5e8408f91bef4f, type: 2}
-  wrongSound: {fileID: 11400000, guid: 5bdebe41977bc494d864dfaa6d02b06b, type: 2}

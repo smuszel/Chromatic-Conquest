@@ -1850,7 +1850,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b56c5aa40dafe134ea5663827e9e0a5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highlightTolerance: 0.6
 --- !u!114 &822086461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4452,6 +4451,11 @@ Prefab:
         type: 2}
       propertyPath: m_Color.b
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114434609427534402, guid: 331334c7a4161c8428a109b4934f88df,
+        type: 2}
+      propertyPath: highlightTolerance
+      value: 0.8
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 108062999860657450, guid: 331334c7a4161c8428a109b4934f88df, type: 2}

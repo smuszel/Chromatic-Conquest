@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Linq;
 
 public class EndConditionObserver : MonoBehaviour
@@ -9,17 +10,16 @@ public class EndConditionObserver : MonoBehaviour
 
     void Update()
     {
-        if (Model._piecesAlive.Count == Model.BlackCount)
-        {
-            Lose();
-            Application.Quit();
-            this.enabled = false;
-
-        }
-        else if (Model.PieceCount < 1)
+        if (Model.PieceCount < 1)
         {
             Win();
-            Application.Quit();
+            StartCoroutine("QuitAfterTime");
+            this.enabled = false;
+        }
+        else if (Model._piecesAlive.Count == Model.BlackCount)
+        {
+            Lose();
+            StartCoroutine("QuitAfterTime");
             this.enabled = false;
         }
     }
@@ -54,5 +54,12 @@ public class EndConditionObserver : MonoBehaviour
                 tile.GetComponent<Renderer>().material.color = Color.green;
             }
         }
+    }
+
+    IEnumerator QuitAfterTime()
+    {
+        yield return new WaitForSeconds(3);
+
+        Application.Quit();
     }
 }

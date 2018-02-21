@@ -111,14 +111,12 @@ public static class Model
         return c;
     }
 
-    public static GameObject GetClosestWithinTolerance(Vector3 point, float tolerance)
+    public static GameObject GetClosestPiece(Vector3 point, float tolerance)
     {
         if (_piecesAlive.FirstOrDefault() == null) return null;
 
         float[] distances = _piecesAlive.Select(p => Vector3.Distance(point, p.transform.position)).ToArray();
         int idx = Array.IndexOf(distances, distances.Min());
-
-        // Debug.Log($"Distance {distances.Min()} from {_piecesAlive[idx]}, passing {distances.Min() < tolerance} becus tolerance is {tolerance}");
 
         if (distances.Min() < tolerance)
         {

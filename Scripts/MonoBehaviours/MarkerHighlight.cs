@@ -4,52 +4,78 @@ using UnityEngine;
 public class MarkerHighlight : MonoBehaviour
 {
     public ClickEffect clickEffect;
-    public GameObject MyTarget { get; set; }
+    public float highlightTolerance = 0.8f;
     Renderer rend;
-    new Light light;
+    Light pointLight;
+
+    GameObject _target;
+    public GameObject MyTarget
+    {
+        get
+        {
+            return _target;
+        }
+
+        set
+        {
+            if (_target != null)
+            {
+                Unparalyze(_target);
+            }
+
+            if (value != null)
+            {
+                rend.enabled = true;
+                pointLight.enabled = true;
+                Paralyze(value);
+            }
+            else
+            {
+                rend.enabled = false;
+                pointLight.enabled = false;
+            }
+
+            _target = value;
+        }
+    }
 
     void Start()
     {
         rend = gameObject.GetComponent<Renderer>();
-        light = gameObject.GetComponentInChildren<Light>();
+        pointLight = gameObject.GetComponentInChildren<Light>();
         rend.enabled = false;
-        light.enabled = false;
+        pointLight.enabled = false;
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        HighlightDecision(Raycaster.HighlightedObject);
-        
-        if (MyTarget != null && Input.GetButtonDown("Fire1"))
+        MyTarget = GetRightTarget();
+
+        if (MyTarget == null)
+        {
+            transform.position = Vector3.zero;
+        }
+        else if (Input.GetButtonDown("Fire1"))
         {
             clickEffect.Execute(MyTarget);
-            MyTarget = null;
         }
-        else if (MyTarget != null)
+        else
         {
             transform.position = MyTarget.transform.position;
         }
     }
 
-    private void HighlightDecision(GameObject target)
+    GameObject GetRightTarget()
     {
-        if (target == null)
-        {
-            rend.enabled = false;
-            light.enabled = false;
-            transform.position = Vector3.zero;
-        }
-        else if (target.tag == "Pieces")
-        {
-            MyTarget = target;
-            rend.enabled = true;
-            light.enabled = true;
-            gameObject.transform.position = target.transform.position;
-        }
-        else
-        {
-            rend.enabled = false;
-            light.enabled = false;
-        }
+        return Model.GetClosestPiece(Raycaster.info.point, highlightTolerance);
+    }
+
+    void Paralyze(GameObject go)
+    {
+        go.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+    }
+    void Unparalyze(GameObject go)
+    {
+        go.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
     }
 }
